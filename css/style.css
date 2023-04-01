@@ -1,0 +1,36 @@
+/*
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/ClientSide/css.css to edit this template
+*/
+/* 
+    Created on : 8 Mar 2023, 07:21:22
+    Author     : shafi
+*/
+
+#k2-heading {
+    text-align: center;
+    font-weight: bold;
+    color: red;
+}
+#login {
+  background: url('BG_image.jpg') no-repeat center center fixed;
+  background-size: cover;
+}
+
+h1.mb-4.text-center.login {
+    color:honeydew;
+    font-size: 50px;
+}
+
+#LoginLabel {
+    color:honeydew;
+    font-size: 20px;
+}
+#LoginLabel2 {
+    color:honeydew;
+    font-size: 20px;
+}
+#Registration_heading {
+    text-align: center;
+    font-weight: bold;
+}

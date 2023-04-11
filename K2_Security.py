@@ -16,7 +16,7 @@ mycursor = mydb.cursor()
 @app.route("/")
 def home():
     if 'username' in session:
-        return redirect("/ManagerHome")
+        return redirect("/Home")
     else:
         return redirect("/login")
 
@@ -37,7 +37,7 @@ def login():
             session['user_id'] = user[0]
             session['username'] = user[1]
             session['type'] = user[3]
-            return redirect("/ManagerHome")
+            return redirect("/Home")
         else:
             return render_template("login.html", error="Invalid Username or Password")
     else:
@@ -80,21 +80,21 @@ def register():
     else:
         return render_template("registration.html")
 
-@app.route("/ManagerHome")
+@app.route("/Home")
 def manager_home():
     if 'username' in session and session['type']:
         return render_template("ManagerHome.html")
     else:
         return redirect("/login")
 
-@app.route("/ManagerSchedule")
+@app.route("/Schedules")
 def manager_schedule():
     if 'username' in session and session['type']:
         return render_template("ManagerSchedule.html")
     else:
         return redirect("/login")
 
-@app.route("/create-shift", methods=["GET", "POST"])
+@app.route("/Schedules", methods=["GET", "POST"])
 def create_shift():
     if request.method == "POST":
         start_time = request.form["start_time"]
@@ -106,9 +106,9 @@ def create_shift():
         mycursor.execute(sql, val)
         mydb.commit()
 
-        return redirect("/ManagerSchedule")
+        return redirect("/Schedules")
     else:
-        return render_template("create_shift.html")
+        return render_template("ManagerSchedule.html")
 
 if __name__ == '__main__':
     app.run(debug=True)

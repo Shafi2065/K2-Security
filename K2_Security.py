@@ -53,29 +53,25 @@ def logout():
 @app.route("/register", methods=["GET", "POST"])
 def register():
     if request.method == "POST":
-        username = request.form["email"]
-        password = request.form["password"]
+        email_address = request.form.get("email_address")
+        password = request.form.get("password")
+        phone_number = request.form.get("phone_number")
+        role = request.form.get("role")
         
-        password = hashlib.md5(password.encode()).hexdigest()
-
-        name = request.form["name"]
-        email = request.form["email"]
-        phone = request.form["phone"]
-        address = request.form["address"]
-        role = request.form["role"]
+        if role is not None:
+            is_manager = (role.lower() == "manager")
+        else:
+            is_manager = False
         
-        sql = "INSERT INTO user (username, password, type) VALUES (%s, %s, %s)"
-        val = (username, password, role.lower() == "manager")
-        mycursor.execute(sql, val)
-        mydb.commit()
+        try:
+            sql = "INSERT INTO user (email_address, password, phone_number, is_manager) VALUES (%s, %s, %s, %s)"
+            val = (email_address, hashlib.md5(password.encode()).hexdigest(), phone_number, is_manager)
+            mycursor.execute(sql, val)
+            mydb.commit()
+        except:
+            mydb.rollback()
+            return render_template("registration.html", error="An error occurred while processing your request.")
         
-        user_id = mycursor.lastrowid
-
-        sql = "INSERT INTO user_details (id, name, email, phone, address) VALUES (%s, %s, %s, %s, %s)"
-        val = (user_id, name, email, phone, address)
-        mycursor.execute(sql, val)
-        mydb.commit()
-
         return redirect("/login")
     else:
         return render_template("registration.html")
@@ -90,16 +86,19 @@ def manager_home():
 @app.route("/Schedules")
 def manager_schedule():
     if 'username' in session and session['type']:
-        return render_template("ManagerSchedule.html")
+        sql = "SELECT * FROM shifts"
+        mycursor.execute(sql)
+        shifts = mycursor.fetchall()
+        return render_template("ManagerSchedule.html", shifts=shifts)
     else:
         return redirect("/login")
 
-@app.route("/Schedules", methods=["GET", "POST"])
+@app.route("/Schedules/create", methods=["GET", "POST"])
 def create_shift():
     if request.method == "POST":
-        start_time = request.form["start_time"]
-        end_time = request.form["end_time"]
-        date = request.form["date"]
+        start_time = request.form.get("start_time")
+        end_time = request.form.get("end_time")
+        date = request.form.get("date")
 
         sql = "INSERT INTO shifts (start_time, end_time, date) VALUES (%s, %s, %s)"
         val = (start_time, end_time, date)
@@ -108,7 +107,43 @@ def create_shift():
 
         return redirect("/Schedules")
     else:
-        return render_template("ManagerSchedule.html")
+        return render_template("CreateShift.html")
 
-if __name__ == '__main__':
+@app.route("/Schedules/<int:id>/edit", methods=["GET", "POST"])
+def edit_shift(id):
+    if 'username' in session and session['type']:
+        if request.method == "POST":
+            start_time = request.form.get("start_time")
+            end_time = request.form.get("end_time")
+            date = request.form.get("date")
+
+            sql = "UPDATE shifts SET start_time=%s, end_time=%s, date=%s WHERE id=%s"
+            val = (start_time, end_time, date, id)
+            mycursor.execute(sql, val)
+            mydb.commit()
+
+            return redirect("/Schedules")
+        else:
+            sql = "SELECT * FROM shifts WHERE id=%s"
+            val = (id,)
+            mycursor.execute(sql, val)
+            shift = mycursor.fetchone()
+            return render_template("EditShift.html", shift=shift)
+    else:
+        return redirect("/login")
+
+
+@app.route("/Schedules/int:id/delete")
+def delete_shift(id):
+    if 'username' in session and session['type']:
+        sql = "DELETE FROM shifts WHERE id=%s"
+        val = (id,)
+        mycursor.execute(sql, val)
+        mydb.commit()
+        return redirect("/Schedules")
+    else:
+        return redirect("/login")
+
+
+if __name__ == "__main__":
     app.run(debug=True)

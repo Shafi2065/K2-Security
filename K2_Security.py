@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, redirect, session
 import mysql.connector
 import hashlib
 
-app = Flask(__name__)
+app = Flask(__name__, template_folder='HTML')
 app.secret_key = "secret key"
 
 mydb = mysql.connector.connect(
@@ -41,7 +41,7 @@ def login():
         else:
             return render_template("login.html", error="Invalid Username or Password")
     else:
-        return render_template("HTML/login.html")
+        return render_template("login.html")
 
 @app.route("/logout")
 def logout():
@@ -70,16 +70,16 @@ def register():
             mydb.commit()
         except:
             mydb.rollback()
-            return render_template("HTML/registration.html", error="An error occurred while processing your request.")
+            return render_template("registration.html", error="An error occurred while processing your request.")
 
         return redirect("/login")
     else:
-        return render_template("HTML/registration.html")
+        return render_template("registration.html")
 
 @app.route("/Home")
 def manager_home():
     if 'username' in session and session['type']:
-        return render_template("HTML/ManagerHome.html")
+        return render_template("ManagerHome.html")
     else:
         return redirect("/login")
 
@@ -89,7 +89,7 @@ def manager_schedule():
         sql = "SELECT * FROM shifts"
         mycursor.execute(sql)
         shifts = mycursor.fetchall()
-        return render_template("HTML/ManagerSchedule.html", shifts=shifts)
+        return render_template("ManagerSchedule.html", shifts=shifts)
     else:
         return redirect("/login")
 
@@ -107,7 +107,7 @@ def create_shift():
 
         return redirect("/Schedules")
     else:
-        return render_template("HTML/create_shift.html")
+        return render_template("ManagerSchedule.html")
 
 if __name__ == "__main__":
     app.run(debug=True)

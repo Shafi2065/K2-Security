@@ -1,0 +1,133 @@
+/*
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/ClientSide/css.css to edit this template
+*/
+/* 
+    Created on : 8 Mar 2023, 07:21:22
+    Author     : shafi
+*/
+
+#login {
+    background: url('BG_image.jpg') no-repeat center center fixed;
+    background-size: cover;
+}
+#k2-heading {
+    text-align: center;
+    font-weight: bold;
+    color: red;
+}
+#LoginLabel {
+    color:honeydew;
+    font-size: 20px;
+}
+#LoginLabel2 {
+    color:honeydew;
+    font-size: 20px;
+}
+h1.mb-4.text-center.login {
+    color:honeydew;
+    font-size: 50px;
+}
+/*Registration page CSS starts from onwards */
+#registration {
+    background: url('BG_image.jpg') no-repeat center center fixed;
+    background-size: cover;
+}
+#Registration_heading {
+    text-align: center;
+    font-weight: bold;
+    color: red;
+}
+#RegisterEmail {
+    color:honeydew;
+    font-size: 50px;
+}
+#Email {
+    color:honeydew;
+    font-size: 15px;
+}
+#Password {
+    color:honeydew;
+    font-size: 15px;
+}
+#Phone {
+    color:honeydew;
+    font-size: 15px;
+}
+.role-label {
+    color:honeydew;
+    font-size: 15px;
+}
+html, body {
+    height: 100%;
+}
+
+/* Management page */
+#ManagerHome {
+    background-color: #404040;
+}
+nav {
+    background-color: black;
+}
+#navbarlabel {
+    color: red;
+    font-size: 25px;
+    font-weight: bold;
+    font-family: Arial, sans-serif;
+}
+.navbar-nav .nav-link {
+    color: white;
+}
+#navbarlabels {
+    color: red;
+}
+#logoutlink {
+    font-size: 10px;
+}
+#mainsectionManager {
+    background-color: wheat;
+}
+#SchedulingPage {
+    background-color: #404040;
+}
+.day {
+    font-family: Arial, sans-serif;
+    font-size: 20px;
+    background-color: #f5f5f5;
+    border: 1px solid #ccc;
+    padding: 20px;
+    text-align: center;
+}
+
+.time {
+    font-family: Arial, sans-serif;
+    font-size: 20px;
+    background-color: #f5f5f5;
+    border: 1px solid #ccc;
+    padding: 20px;
+    text-align: center;
+    height: 60px;
+}
+.box {
+    font-family: Arial, sans-serif;
+    font-size: 20px;
+    background-color: white;
+    border: 1px solid #ccc;
+    text-align: center;
+    height: 60px;
+    padding: 20px;
+    margin: 0 5px;
+    width: 150%;
+}
+.scheduled {
+  background-color: red;
+}
+#myButton {
+  background-color: #04AA6D; /* Green background */
+  border: none; /* Remove borders */
+  color: white; /* White text */
+  padding: 12px 16px; /* Some padding */
+  font-size: 16px /* Set a font size */
+}
+
+

@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<!--
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/ClientSide/html.html to edit this template
+-->
+<html>
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+        <link rel="stylesheet" href="https://formden.com/static/cdn/bootstrap-iso.css" />
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/js/bootstrap-datepicker.min.js"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css"/>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link rel="stylesheet" href="../css/style.css"/>
+        <link rel="stylesheet" href="../css/bootstrap.min.css">
+    </head>
+    <body id="TimeOffRequests">
+        <nav class="navbar navbar-expand-lg bg-body-tertiary">
+            <div class="container-fluid">
+                <a class="navbar-brand" id="navbarlabel">K2 Security</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                    <div class="navbar-nav">
+                        <a class="nav-link active" aria-current="page" href="">Home</a>
+                        <a class="nav-link" href="EmployeeSchedule.html">My Schedule</a>
+                        <a class="nav-link" href="TimeOffRequests.html">Request Time off</a>
+                        <a class="nav-link me-0 ms-auto btn btn-secondary rounded-pill" href="#" id="logoutlink">Log out</a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+        <h6 class="display-3" style="text-align: center; color: white">Request Time Off</h6>
+        <div class="bootstrap-iso">
+            <div class="container" style="padding: 20px">
+                <div class="row">
+                    <!-- Form code begins -->
+                    <form method="post">
+                        <div class="form-group row">
+                            <label for="text" class="col-4 col-form-label">First Name and Last Name</label> 
+                            <div class="col-8">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text">
+                                            <i class="fa fa-address-card"></i>
+                                        </div>
+                                    </div> 
+                                    <input id="text" name="text" placeholder="Enter your name" type="text" class="form-control" required="required">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="" class="col-4 col-form-label">Email Address</label> 
+                            <div class="col-8">
+                                <div class="input-group">
+                                    <input id="" name="" type="text" required="required" class="form-control" placeholder="Enter your Email"> 
+                                    <div class="input-group-append">
+                                        <div class="input-group-text">
+                                            <i class="fa fa-at"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="text2" class="col-4 col-form-label">Phone Number</label> 
+                            <div class="col-8">
+                                <div class="input-group">
+                                    <input id="text2" name="text2" placeholder="+44 (0)" type="text" class="form-control"> 
+                                    <div class="input-group-append">
+                                        <div class="input-group-text">
+                                            <i class="fa fa-mobile-phone"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-4">Contact method upon reply</label> 
+                            <div class="col-8">
+                                <div class="custom-control custom-radio custom-control-inline">
+                                    <input name="radio" id="radio_0" type="radio" class="custom-control-input" value="rabbit"> 
+                                    <label for="radio_0" class="custom-control-label">Phone</label>
+                                </div>
+                                <div class="custom-control custom-radio custom-control-inline">
+                                    <input name="radio" id="radio_1" type="radio" class="custom-control-input" value="duck"> 
+                                    <label for="radio_1" class="custom-control-label">Email</label>
+                                </div>
+                                <div class="custom-control custom-radio custom-control-inline">
+                                    <input name="radio" id="radio_2" type="radio" class="custom-control-input" value="fish"> 
+                                    <label for="radio_2" class="custom-control-label">Do not contact</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group"> 
+                            <label class="control-label" for="date">Holiday From</label>
+                            <input class="form-control" id="date" name="date" placeholder="MM/DD/YYY" type="text"/>
+                        </div>
+                        <div class="form-group"> 
+                            <label class="control-label" for="date">Holiday End</label>
+                            <input class="form-control" id="date" name="date" placeholder="MM/DD/YYY" type="text"/>
+                        </div>
+                        <div class="form-group"> 
+                            <button class="btn btn-primary " name="submit" type="submit">Submit</button>
+                        </div>
+                    </form>
+                </div>    
+            </div>
+        </div>
+        <script>
+            $(document).ready(function () {
+                var date_input = $('input[name="date"]');
+                var container = $('.bootstrap-iso form').length > 0 ? $('.bootstrap-iso form').parent() : "body";
+                var options = {
+                    format: 'mm/dd/yyyy',
+                    container: container,
+                    todayHighlight: true,
+                    autoclose: true,
+                };
+                date_input.datepicker(options);
+            });
+        </script>
+    </body>
+</html>

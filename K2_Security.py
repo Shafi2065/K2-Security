@@ -1,113 +1,36 @@
-from flask import Flask, render_template, request, redirect, session
-import mysql.connector
-import hashlib
+from flask import Flask
+from flask_sqlalchemy import SQLAlchemy
+from flask_login import LoginManager
+from flask_migrate import Migrate
+from flask_mail import Mail
+from werkzeug.security import generate_password_hash, check_password_hash
+import os
 
-app = Flask(__name__, template_folder='HTML')
-app.secret_key = "secret key"
+app = Flask(__name__, template_folder='templates', static_folder='static')
 
-mydb = mysql.connector.connect(
-    host="localhost",
-    user="root",
-    password="gv64woe1",
-    database="K2_Security"
-)
-mycursor = mydb.cursor()
+app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
+app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URI')
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['MAIL_SERVER'] = 'smtp.gmail.com'
+app.config['MAIL_PORT'] = 465
+app.config['MAIL_USERNAME'] = os.getenv('MAIL_USERNAME')
+app.config['MAIL_PASSWORD'] = os.getenv('MAIL_PASSWORD')
+app.config['MAIL_USE_TLS'] = False
+app.config['MAIL_USE_SSL'] = True
 
-@app.route("/")
-def home():
-    if 'username' in session:
-        return redirect("/Home")
-    else:
-        return redirect("/login")
+db = SQLAlchemy(app)
+login_manager = LoginManager(app)
+migrate = Migrate(app, db)
+mail = Mail(app)
 
-@app.route("/login", methods=["GET", "POST"])
-def login():
-    if request.method == "POST":
-        username = request.form["username"]
-        password = request.form["password"]
+login_manager.login_view = 'login'
 
-        password = hashlib.md5(password.encode()).hexdigest()
+@login_manager.user_loader
+def load_user(user_id):
+    from models import User  
+    return User.query.get(int(user_id))
 
-        sql = "SELECT * FROM user WHERE username=%s AND password=%s"
-        val = (username, password)
-        mycursor.execute(sql, val)
-        user = mycursor.fetchone()
-
-        if user:
-            session['user_id'] = user[0]
-            session['username'] = user[1]
-            session['type'] = user[3]
-            return redirect("/Home")
-        else:
-            return render_template("login.html", error="Invalid Username or Password")
-    else:
-        return render_template("login.html")
-
-@app.route("/logout")
-def logout():
-    session.pop('user_id', None)
-    session.pop('username', None)
-    session.pop('type', None)
-    return redirect("/login")
-
-@app.route("/register", methods=["GET", "POST"])
-def register():
-    if request.method == "POST":
-        email_address = request.form.get("email_address")
-        password = request.form.get("password")
-        phone_number = request.form.get("phone_number")
-        role = request.form.get("role")
-
-        if role is not None:
-            is_manager = (role.lower() == "manager")
-        else:
-            is_manager = False
-
-        try:
-            sql = "INSERT INTO user (email_address, password, phone_number, is_manager) VALUES (%s, %s, %s, %s)"
-            val = (email_address, hashlib.md5(password.encode()).hexdigest(), phone_number, is_manager)
-            mycursor.execute(sql, val)
-            mydb.commit()
-        except:
-            mydb.rollback()
-            return render_template("registration.html", error="An error occurred while processing your request.")
-
-        return redirect("/login")
-    else:
-        return render_template("registration.html")
-
-@app.route("/Home")
-def manager_home():
-    if 'username' in session and session['type']:
-        return render_template("ManagerHome.html")
-    else:
-        return redirect("/login")
-
-@app.route("/Schedules")
-def manager_schedule():
-    if 'username' in session and session['type']:
-        sql = "SELECT * FROM shifts"
-        mycursor.execute(sql)
-        shifts = mycursor.fetchall()
-        return render_template("ManagerSchedule.html", shifts=shifts)
-    else:
-        return redirect("/login")
-
-@app.route("/Schedules/create", methods=["GET", "POST"])
-def create_shift():
-    if request.method == "POST":
-        start_time = request.form.get("start_time")
-        end_time = request.form.get("end_time")
-        date = request.form.get("date")
-
-        sql = "INSERT INTO shifts (start_time, end_time, date) VALUES (%s, %s, %s)"
-        val = (start_time, end_time, date)
-        mycursor.execute(sql, val)
-        mydb.commit()
-
-        return redirect("/Schedules")
-    else:
-        return render_template("ManagerSchedule.html")
+from routes import *
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=os.getenv('DEBUG_MODE', 'False').lower() == 'true')
